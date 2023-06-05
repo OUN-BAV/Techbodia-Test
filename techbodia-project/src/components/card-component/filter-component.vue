@@ -1,41 +1,41 @@
 <template>
-    <div class="row">
-        <div class="col-md-3 mx-1 my-2">
-            <select2Component v-model="myValue" :options="myOptions" :settings="{ settingOption: value, settingOption: value }" @change="myChangeEvent($event)" @select="mySelectEvent($event)" placeholder="select country name"/>
+    <div class="mx-1 w-25">
+        <div class="input-group">
+            <div class="form-outline">
+                <input type="search" id="form1" class="form-control" v-model="keySearch" @input="searchingCountryName"/>
+            </div>
+            <button type="button" class="btn my-btn rounded">
+                Search
+            </button>
         </div>
     </div>
 </template>
+<style scoped>
+    .my-btn{
+            border: 1px solid #ff1584;
+            color: #ff1584;
+        }
+    #form1{
+        border: 1px solid #ff1584;
+    }
+</style>
 <script>
-import select2Component from 'vue3-select2-component'
 
 export default {
-    components: {select2Component},
+    emits: ['key-search'],
     props:{
         allCountries:Object
     },
     data() {
         return {
-            myValue: '',
-            myOptions: [] // or [{id: key, text: value}, {id: key, text: value}]
+            keySearch: '',
         }
     },
     methods: {
-        myChangeEvent(val){
-            console.log(val);
+        searchingCountryName(){
+           this.$emit('key-search',this.keySearch)
         },
-        mySelectEvent({id, text}){
-            console.log({id, text})
-        },
-        allOption(){
-           for (let country in this.allCountries){
-               this.myOptions.push(this.allCountries[country].name.official);
-           }
-        }
     },
-    mounted(){
-        this.allOption()
-    }
-
 }
 
 </script>
