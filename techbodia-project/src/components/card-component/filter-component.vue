@@ -4,7 +4,7 @@
             <div class="form-outline">
                 <input type="search" id="form1" class="form-control" v-model="keySearch" @input="searchingCountryName"/>
             </div>
-            <button type="button" class="btn my-btn rounded">
+            <button type="button" class="btn my-btn rounded mx-1">
                 Search
             </button>
         </div>

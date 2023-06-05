@@ -1,6 +1,6 @@
 <template>
     <div>
-    <div class="d-flex justify-content-between align-items-start">
+    <div class="d-flex justify-content-between align-items-start w-100">
         <filterComponent @key-search="searchCountry"></filterComponent>
     
         <nav aria-label="Page navigation example">
@@ -51,17 +51,17 @@
                 <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{ index+1 }}</td>
                 <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left"><img :src="country.flags.png ?? ''" width="100" alt=""></td>
                 <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">
-                    <modalPopup :Country="country">
+                    <modalPopup :Country="oneCountry">
                         <template v-slot:country-name>
-                            <a href="" class="text-decoration-none text-dark text-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{country.name.official ?? ''}}</a>
+                            <a @click="propCountryToModal(country)" href="" class="text-decoration-none text-dark text-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{country.name.official ?? ''}}</a>
                         </template>
                     </modalPopup>
                 </td>
-                <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{country.translations.ara.official ?? ''}}</td>
+                <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{ getNativeName(country.name.nativeName) ?? ''}}</td>
                 <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{ country.altSpellings[2] ?? '' }}</td>
                 <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{ country.cca2 }}</td>
                 <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{ country.cca3 }}</td>
-                <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{ country.idd.root}}</td>
+                <td v-if="(index+1) >= startIndexCurrentPag && (index+1) <= endIndexCurrentPag" class="text-left">{{ countryCode(country.idd.root,country.idd.suffixes) }}</td>
             </tr>
         </tbody>
     </table>
@@ -90,7 +90,8 @@ export default {
             startIndexCurrentPag:1,
             endIndexCurrentPag:25,
             pageNum:[1,2,3],
-            keySearch:''
+            keySearch:'',
+            oneCountry:{},
         }
     },
     computed:{
@@ -110,7 +111,7 @@ export default {
             return this.countriesInformation.filter(country=>{
                 return country.name.official.toLowerCase().indexOf(this.keySearch.toLowerCase()) > -1
             })
-        }
+        },
     },
     methods:{
         increaseOrDecreasePageNum(keyword){
@@ -155,6 +156,23 @@ export default {
         }, 
         searchCountry(keyword){
             this.keySearch = keyword
+        },
+        propCountryToModal(country){
+            this.oneCountry = country;
+            console.log(this.oneCountry);
+        },
+        getNativeName(object){
+            let result = ''
+            for (let key in object){
+                result+=object[key].official+"\n"
+            }
+            return result;
+        },
+        countryCode(root,suffixe){
+            if( suffixe !== undefined && root !== undefined){
+                return root+suffixe
+            }
+            return ''
         },
     },
     beforeUpdate(){
