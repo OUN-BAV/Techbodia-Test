@@ -2,59 +2,25 @@
   <div class="container bg-light p-3">
     
     <div class="row">
-      <filterComponent :allCountries="allCountries"></filterComponent>
-      <VueAwesomePaginate
-      :total-items="50"
-      :items-per-page="5"
-      :max-pages-shown="5"
-      v-model="currentPage"
-      :on-click="onClickHandler"
-    />
-      
-      <cardComponent v-for="(counties, id) in allCountries" :countries="counties" :key="id"></cardComponent>
+    <tableComponent :allCountries="allCountries"></tableComponent>
     </div>
   </div>
 </template>
 <style>
-  .pagination-container {
-    display: flex;
-    column-gap: 10px;
-  }
-  .paginate-buttons {
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: rgb(242, 242, 242);
-    border: 1px solid rgb(217, 217, 217);
-    color: black;
-  }
-  .paginate-buttons:hover {
-    background-color: #d8d8d8;
-  }
-  .active-page {
-    background-color: #3498db;
-    border: 1px solid #3498db;
-    color: white;
-  }
-  .active-page:hover {
-    background-color: #2988c8;
+  .page-link .page-item{
+    color: #ff1584;
   }
 </style>
 
 <script>
-import cardComponent from './card-component/card-component.vue';
-import filterComponent from './card-component/filter-component.vue';
+import tableComponent from './datatable-component/datatable-component.vue';
 import axios from 'axios';
 import { ref } from 'vue';
-import VueAwesomePaginate from "vue-awesome-paginate";
 import "vue-awesome-paginate/dist/style.css";
 export default {
   name: 'HelloWorld',
   components:{
-    cardComponent,
-    filterComponent,
-    VueAwesomePaginate
+    tableComponent,
   },
   props: {
     msg: String
